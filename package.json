@@ -1,0 +1,17 @@
+{
+  "name": "postboard-backend",
+  "version": "0.1.0",
+  "description": "PostBoard backend API in Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postboard",
+    "backend",
+    "api",
+    "express"
+  ],
+  "author": "Sem Rekkers <rekkers.sem@gmail.com>",
+  "license": "MIT"
+}
