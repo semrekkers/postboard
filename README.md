@@ -25,6 +25,13 @@ PostBoard is a small message platform. It has basic User Management and Post Man
 
 ## Basic design
 
+## Color scheme
+
+|Type           |Name               |RGB            |
+|---------------|-------------------|---------------|
+|Primary        |Material Blue 500  |#2196f3        |
+|Secondary      |Material Pink 400  |#ec407a        |
+
 ## Docker images
 
 The base image for the backend is [semrekkers/caddy-node](https://hub.docker.com/r/semrekkers/caddy-node/).
