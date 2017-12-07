@@ -17,19 +17,20 @@ function guard(req, res, next) {
         if (env.DEBUG) {
             res.status(401).json({ message: err.message });
         } else {
-            res.status(401).json({ message: 'Invalid token' });
+            res.status(401).json({ message: 'invalid token' });
         }
     }
 }
 
-function setAuthCookie(res, userId) {
+function grant(res, userId) {
     let token = jwt.sign({
         usr: userId
     }, env.JWT_SECRET, { expiresIn: '1h' });
     res.cookie('postboard_auth_token', token, { httpOnly: true, secure: !env.INSECURE_COOKIE });
+    res.status(200).json({ token: token });
 }
 
 module.exports = {
     guard: guard,
-    setAuthCookie: setAuthCookie,
+    grant: grant,
 };
