@@ -1,8 +1,7 @@
 const env = require('../app.env');
 
 const jwt = require('jsonwebtoken');
-
-const cookieName = 'postboard_session_token';
+const lib = require('../lib');
 
 function guard(req, res, next) {
     if (req.method == 'POST' && (req.path == '/api/v1/sessions' || req.path == '/api/v1/users')) {
@@ -10,21 +9,20 @@ function guard(req, res, next) {
         return;
     }
 
-    try {
-        let token = req.cookies[cookieName];
-        let payload = jwt.verify(token, env.JWT_SECRET);
-        req.context = {
-            userId: payload.usr,
-            admin: payload.admin
-        };
-        next();
-    } catch (err) {
-        if (env.DEBUG) {
-            res.status(401).json({ message: err.message });
-        } else {
-            res.status(401).json({ message: 'invalid token' });
-        }
-    }
+    parseToken(req)
+        .then((token) => {
+            return jwt.verify(token, env.JWT_SECRET);
+        })
+        .then((payload) => {
+            req.context = {
+                userId: payload.usr,
+                admin: payload.admin
+            };
+            next();
+        })
+        .catch((err) => {
+            lib.handleError(res, 401, err, 'Invalid token');
+        });
 }
 
 function grant(res, userId, admin) {
@@ -32,8 +30,21 @@ function grant(res, userId, admin) {
         usr: userId,
         admin: Boolean(admin)
     }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES });
-    res.cookie(cookieName, token, { httpOnly: true, secure: !env.INSECURE_COOKIE });
     res.status(200).json({ token: token });
+}
+
+function parseToken(req) {
+    return new Promise((resolve, reject) => {
+        let authorization = req.params.authorization;
+        if (!authorization) {
+            return reject(new Error('Authorization header not provided'));
+        }
+        let parts = authorization.split(' ');
+        if (parts[0] !== 'Bearer' || !parts[1]) {
+            return reject(new Error('Invalid Authorization header'));
+        }
+        resolve(parts[1]);
+    });
 }
 
 module.exports = {

@@ -16,9 +16,7 @@ if (env.DEBUG) {
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-if (!env.GUARD_DISABLED) {
-    app.use(guard.guard);
-}
+app.use(guard.guard);
 
 app.use('/api/v1', require('./routes'));
 
