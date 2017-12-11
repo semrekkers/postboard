@@ -2,14 +2,16 @@ const env = require('../app.env');
 
 const jwt = require('jsonwebtoken');
 
+const cookieName = 'postboard_session_token';
+
 function guard(req, res, next) {
-    if (req.path == '/auth' || req.path == '/signup') {
+    if (req.method == 'POST' && (req.path == '/api/v1/sessions' || req.path == '/api/v1/users')) {
         next();
         return;
     }
 
     try {
-        let token = req.cookies.postboard_auth_token;
+        let token = req.cookies[cookieName];
         let payload = jwt.verify(token, env.JWT_SECRET);
         req.context = { userId: payload.usr };
         next();
@@ -25,8 +27,8 @@ function guard(req, res, next) {
 function grant(res, userId) {
     let token = jwt.sign({
         usr: userId
-    }, env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('postboard_auth_token', token, { httpOnly: true, secure: !env.INSECURE_COOKIE });
+    }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES });
+    res.cookie(cookieName, token, { httpOnly: true, secure: !env.INSECURE_COOKIE });
     res.status(200).json({ token: token });
 }
 

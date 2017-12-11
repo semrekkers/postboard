@@ -20,7 +20,7 @@ if (!env.GUARD_DISABLED) {
     app.use(guard.guard);
 }
 
-app.use('/', require('./routes/auth'));
+app.use('/api/v1', require('./routes'));
 
 app.listen(env.PORT, () => {
     console.log('Listening on http://localhost:' + env.PORT);
