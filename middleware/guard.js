@@ -13,7 +13,10 @@ function guard(req, res, next) {
     try {
         let token = req.cookies[cookieName];
         let payload = jwt.verify(token, env.JWT_SECRET);
-        req.context = { userId: payload.usr };
+        req.context = {
+            userId: payload.usr,
+            admin: payload.admin
+        };
         next();
     } catch (err) {
         if (env.DEBUG) {
@@ -24,9 +27,10 @@ function guard(req, res, next) {
     }
 }
 
-function grant(res, userId) {
+function grant(res, userId, admin) {
     let token = jwt.sign({
-        usr: userId
+        usr: userId,
+        admin: Boolean(admin)
     }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES });
     res.cookie(cookieName, token, { httpOnly: true, secure: !env.INSECURE_COOKIE });
     res.status(200).json({ token: token });

@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
                 return Promise.reject(errIvalidLogin);
             }
             if (userCred.user.comparePassword(userCred.cred.password)) {
-                guard.grant(res, userCred.user._id);
+                guard.grant(res, userCred.user._id, userCred.user.admin);
             } else {
                 return Promise.reject(errIvalidLogin);
             }
