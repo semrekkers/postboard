@@ -7,14 +7,15 @@ const PostSchema = new Schema({
     title: { type: String, required: true },
     date: { type: Date, required: true, default: Date.now },
     content: { type: String },
+    edited: { type: Date },
 
-    comments: { type: [
-        {
+    comments: {
+        type: [{
             user_id: { type: ObjectId, required: true },
             date: { type: Date, required: true, default: Date.now },
             text: { type: String }
-        }
-    ] }
+        }]
+    }
 });
 
 module.exports = mongoose.model('post', PostSchema);

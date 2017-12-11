@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
@@ -7,6 +8,13 @@ const UserSchema = new Schema({
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     hashed_password: { type: String },
+
+    favorites: {
+        type: [{
+            post_id: { type: ObjectId, required: true },
+            at: { type: Date, required: true, default: Date.now }
+        }]
+    }
 });
 
 const saltRounds = 10;
