@@ -25,6 +25,51 @@ PostBoard is a small message platform. It has basic User Management and Post Man
 
 ## Basic design
 
+## API
+
+The current API version is `v1`. API prefix for all paths is `/api/v1`.
+
+### Sessions
+
+|Method     |Path               |Description                               |
+|-----------|-------------------|------------------------------------------|
+|`POST`     |`/sessions`        |Creates a new session (login). Requires credentials.|
+
+### Users
+
+|Method     |Path               |Description                               |
+|-----------|-------------------|------------------------------------------|
+|`POST`     |`/users`           |Creates a new user (signup).              |
+|`GET`      |`/users/:id`       |Get a single user.                        |
+|`PATCH`    |`/users/:id`       |Update user.                              |
+|`DELETE`   |`/users/:id`       |Delete user.                              |
+
+### Posts
+
+|Method     |Path               |Description                               |
+|-----------|-------------------|------------------------------------------|
+|`POST`     |`/posts`           |Creates a new post.                       |
+|`GET`      |`/posts/:id`       |Get a single post.                        |
+|`PATCH`    |`/posts/:id`       |Update post.                              |
+|`DELETE`   |`/posts/:id`       |Delete post.                              |
+
+### Comments
+
+|Method     |Path                       |Description                       |
+|-----------|---------------------------|----------------------------------|
+|`POST`     |`/posts/:id/comments`      |Creates a new post.               |
+|`GET`      |`/posts/:id/comments`      |Get a single post.                |
+|`PATCH`    |`/posts/:id/comments/:id`  |Update post.                      |
+|`DELETE`   |`/posts/:id/comments/:id`  |Delete post.                      |
+
+### Favorites
+
+|Method     |Path               |Description                               |
+|-----------|-------------------|------------------------------------------|
+|`POST`     |`/favorites`       |Add post to favorites.                    |
+|`GET`      |`/favorites`       |Get all favorite posts.                   |
+|`DELETE`   |`/favorites/:id`   |Delete post from favorites.               |
+
 ## Color scheme
 
 |Type           |Name               |RGB            |
