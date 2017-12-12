@@ -2,22 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApiService } from './api.service';
 
+import { AppConfig } from '../app.config';
+
 const lsKey = 'postboard_auth_token';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private api: ApiService, private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getToken(): string {
+  getToken() {
     return window.sessionStorage.getItem(lsKey);
+  }
+
+  getTokenHeader() {
+    return 'Bearer ' + this.getToken();
   }
 
   setToken(token: string) {
     window.sessionStorage.setItem(lsKey, token);
   }
 
-  isAuthenticated(): boolean {
+  isAuthenticated() {
     return this.getToken() != null;
   }
 
@@ -30,7 +36,7 @@ export class AuthService {
 
     return new Promise((resolve, reject) => {
       this.http.post(
-        this.api.getApiPath('/api/v1/sessions'),
+        AppConfig.API_ENDPOINT + '/sessions',
         payload
       ).subscribe(
         (data) => {

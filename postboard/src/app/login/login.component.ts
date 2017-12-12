@@ -8,7 +8,7 @@ import { AuthService } from '../shared/auth.service';
 })
 export class LoginComponent implements OnInit {
     model: any = {};
-    loading = false;
+    errorMsg: string = null;
     returnUrl: string;
 
     constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         })
         .catch((err) => {
-          // TODO: Something went wrong.
+            this.errorMsg = err.error.message;
         });
     }
 }
