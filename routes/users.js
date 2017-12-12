@@ -25,7 +25,11 @@ router.post('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    User.findById(req.params.id, '_id name first_name last_name')
+    let id = req.params.id;
+    if (id == 'current') {
+        id = req.context.userId;
+    }
+    User.findById(id, '_id name first_name last_name')
         .then((user) => {
             res.status(200).json(user);
         })

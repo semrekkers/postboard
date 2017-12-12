@@ -13,6 +13,23 @@ if (env.DEBUG) {
     app.use(logger('dev'));
 }
 
+if (env.ALLOW_ALL_ORIGINS) {
+    app.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', '*');
+        next();
+    });
+}
+
+// Handle preflight-request
+app.use((req, res, next) => {
+    if (req.method == 'OPTIONS') {
+        res.sendStatus(200);
+        return;
+    }
+    next();
+});
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 

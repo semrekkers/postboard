@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const env = {
     DEBUG: Boolean(process.env.DEBUG),
     PORT: process.env.PORT || '3000',
+    ALLOW_ALL_ORIGINS: Boolean(process.env.ALLOW_ALL_ORIGINS),
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost/postboard',
     JWT_SECRET: process.env.JWT_SECRET || 'secret',
     JWT_EXPIRES: process.env.JWT_EXPIRES || '1h',
