@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 const bcrypt = require('bcrypt');
 
 const FavoriteSchema = new Schema({
-    post_id: { type: ObjectId, required: true },
+    post: { type: ObjectId, required: true, ref: 'Post' },
     at: { type: Date, required: true, default: Date.now }
 });
 
@@ -28,4 +28,4 @@ UserSchema.methods.comparePassword = function(passwd) {
     return bcrypt.compareSync(passwd, this.hashed_password);
 };
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

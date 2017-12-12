@@ -1,22 +1,44 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
-import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { LoginComponent } from './login/login.component';
 import { AppGuard } from './app.guard';
+import { PostsComponent } from './posts/posts.component';
+import { PostStartComponent } from './posts/post-start/post-start.component';
+import { PostEditComponent } from './posts/post-edit/post-edit.component';
+import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 
-const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full', canActivate: [AppGuard] },
-  { path: 'recipes', component: RecipesComponent, children: [
-    { path: '', component: RecipeStartComponent },
-    { path: 'new', component: RecipeEditComponent },
-    { path: ':id', component: RecipeDetailComponent },
-    { path: ':id/edit', component: RecipeEditComponent },
-  ] },
-  { path: 'login', component: LoginComponent }
+const appRoutes: Routes = [{
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'posts',
+    component: PostsComponent,
+    canActivate: [AppGuard],
+    children: [{
+        path: '',
+        component: PostStartComponent
+      },
+      {
+        path: 'new',
+        component: PostEditComponent
+      },
+      {
+        path: ':id',
+        component: PostDetailComponent
+      },
+      {
+        path: ':id/edit',
+        component: PostEditComponent
+      },
+    ]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ post.title }}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn-group" appDropdown>
+      <button type="button" class="btn btn-primary dropdown-toggle">
+        Manage Post
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a style="cursor: pointer;" (click)="onEditPost()">Edit Post</a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="onDeletePost()">Delete Post</a>
+        </li>
+      </ul>
+    </div>
+    <div class="pull-right">
+      <strong>
+        Add to Favorite
+      </strong>
+      <button (click)="onAddToFavorite()" class="btn btn-primary" *ngIf="!post.favorite">
+        <span class="glyphicon glyphicon-star-empty" aria-hidden="true" *ngIf="!post.favorite"></span>
+      </button>
+      <!-- <button (click)="onRemoveFromFavorite()" class="btn btn-primary" *ngIf="post.favorite">
+        <span class="glyphicon glyphicon-star" aria-hidden="true" *ngIf="post.favorite"></span>
+      </button> -->
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    {{ post.content }}
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <!-- <li class="list-group-item" *ngFor="let ingredient of post.ingredients">
+        {{ ingredient.name }} - {{ ingredient.amount }}
+      </li> -->
+    </ul>
+  </div>
+</div>

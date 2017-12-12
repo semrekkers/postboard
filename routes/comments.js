@@ -7,7 +7,7 @@ router.post('/', (req, res) => {
     Post.findById(req.params.postId)
         .then((post) => {
             let comment = req.body;
-            comment.user_id = req.context.userId;
+            comment.author = req.context.userId;
             post.comments.push(comment);
             return post.save();
         })

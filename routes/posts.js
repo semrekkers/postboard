@@ -5,7 +5,7 @@ const lib = require('../lib');
 
 router.post('/', (req, res) => {
     let postForm = req.body;
-    postForm.user_id = req.context.userId;
+    postForm.author = req.context.userId;
     let post = new Post(postForm);
 
     post.save()
@@ -14,6 +14,16 @@ router.post('/', (req, res) => {
         })
         .catch((err) => {
             lib.handleError(req, 500, err);
+        });
+});
+
+router.get('/', (req, res) => {
+    Post.find().populate('author')
+        .then((posts) => {
+            res.status(200).json(posts);
+        })
+        .catch((err) => {
+            lib.handleError(res, 400, err);
         });
 });
 

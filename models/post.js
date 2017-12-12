@@ -3,13 +3,13 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const CommentSchema = new Schema({
-    user_id: { type: ObjectId, required: true },
+    author: { type: ObjectId, required: true, ref: 'User' },
     date: { type: Date, required: true, default: Date.now },
     text: { type: String }
 });
 
 const PostSchema = new Schema({
-    user_id: { type: ObjectId, required: true },
+    author: { type: ObjectId, required: true, ref: 'User' },
     title: { type: String, required: true },
     date: { type: Date, required: true, default: Date.now },
     content: { type: String },
@@ -18,4 +18,4 @@ const PostSchema = new Schema({
     comments: { type: [CommentSchema] }
 });
 
-module.exports = mongoose.model('post', PostSchema);
+module.exports = mongoose.model('Post', PostSchema);
