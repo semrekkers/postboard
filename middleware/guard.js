@@ -35,7 +35,7 @@ function grant(res, userId, admin) {
 
 function parseToken(req) {
     return new Promise((resolve, reject) => {
-        let authorization = req.params.authorization;
+        let authorization = req.headers.authorization;
         if (!authorization) {
             return reject(new Error('Authorization header not provided'));
         }
