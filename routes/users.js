@@ -3,6 +3,7 @@ const env = require('../app.env');
 const router = require('express').Router();
 
 const User = require('../models/user');
+const lib = require('../lib');
 
 router.post('/', (req, res) => {
     if (!env.ALLOW_SIGNUP) {
@@ -19,8 +20,37 @@ router.post('/', (req, res) => {
             res.status(200).json({ _id: u._id });
         })
         .catch((err) => {
-            res.status(400).json({ message: err.message });
+            lib.handleError(res, 400, err);
         });
+});
+
+router.get('/:id', (req, res) => {
+    User.findById(req.params.id, '_id name first_name last_name')
+        .then((user) => {
+            res.status(200).json(user);
+        })
+        .catch((err) => {
+            lib.handleError(res, 400, err);
+        });
+});
+
+// TODO: PATCH
+
+router.delete('/:id', (req, res) => {
+    if (req.context.admin || req.context.userId === req.params.id) {
+        User.findByIdAndRemove(req.params.id)
+            .then(() => {
+                res.sendStatus(200);
+            })
+            .catch((err) => {
+                lib.handleError(res, 400, err);
+            });
+    
+        // TODO: Token must be invalidated now.
+
+    } else {
+        lib.handleError(res, 401, 'Unauthorized');
+    }
 });
 
 function setPassword(user, reqBody) {

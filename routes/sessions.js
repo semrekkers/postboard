@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const guard = require('../middleware/guard');
+const lib = require('../lib');
 
 const User = require('../models/user');
 
@@ -24,7 +25,7 @@ router.post('/', (req, res) => {
             }
         })
         .catch((err) => {
-            res.status(401).json({ message: err.message });
+            lib.handleError(res, 401, err);
         });
 });
 
