@@ -1,3 +1,4 @@
 node_modules
 art/*.png
 .env
+.vscode
