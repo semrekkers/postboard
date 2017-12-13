@@ -7,6 +7,7 @@ import { PostsComponent } from './posts/posts.component';
 import { PostStartComponent } from './posts/post-start/post-start.component';
 import { PostEditComponent } from './posts/post-edit/post-edit.component';
 import { PostDetailComponent } from './posts/post-detail/post-detail.component';
+import { PostViewComponent } from './posts2/post-view/post-view.component';
 
 const appRoutes: Routes = [{
     path: '',
@@ -34,6 +35,10 @@ const appRoutes: Routes = [{
         component: PostEditComponent
       },
     ]
+  },
+  {
+    path: 'posts2/:id',
+    component: PostViewComponent
   },
   {
     path: 'login',

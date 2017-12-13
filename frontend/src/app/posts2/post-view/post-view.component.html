@@ -1,0 +1,13 @@
+<div>
+  <div class="row">
+    <h3>{{ post.title }}</h3>
+  </div>
+  <div class="row">
+    By {{ post.author.first_name }} {{ post.author.last_name }}
+  </div>
+  <div class="row">
+    {{ post.content }}
+  </div>
+</div>
+<app-post-comment *ngFor="let cmt of this.post.comments" [comment]="cmt"></app-post-comment>
+<app-post-write-comment [post]="post"></app-post-write-comment>
