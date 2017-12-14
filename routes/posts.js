@@ -3,6 +3,8 @@ const router = require('express').Router();
 const Post = require('../models/post');
 const lib = require('../lib');
 
+const userProjection = '_id name first_name last_name';
+
 router.post('/', (req, res) => {
     let postForm = req.body;
     postForm.author = req.context.userId;
@@ -18,7 +20,7 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    Post.find().populate('author')
+    Post.find().limit(100).populate('author', userProjection)
         .then((posts) => {
             res.status(200).json(posts);
         })
@@ -28,7 +30,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    Post.findById(req.params.id).populate('author').populate('comments.author')
+    Post.findById(req.params.id)
+        .populate('author', userProjection)
+        .populate('comments.author', userProjection)
         .then((post) => {
             res.status(200).json(post);
         })
@@ -45,6 +49,7 @@ router.put('/:id', (req, res) => {
             }
             post.title = req.body.title;
             post.content = req.body.content;
+            post.subjects = req.body.subjects;
             post.edited = Date.now();
             return post.save();
         })

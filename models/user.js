@@ -14,6 +14,7 @@ const UserSchema = new Schema({
     last_name: { type: String, required: true },
     hashed_password: { type: String },
     admin: { type: Boolean },
+    interests: { type: [String], required: true, default: [] },
 
     favorites: { type: [FavoriteSchema] }
 });

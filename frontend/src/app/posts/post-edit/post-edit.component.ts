@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Post } from '../../models/post.model';
 
 import { PostService } from '../post.service';
+import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 
 @Component({
   selector: 'app-post-edit',
@@ -32,10 +33,12 @@ export class PostEditComponent implements OnInit {
   }
 
   onSubmit() {
+    let formValue = this.postForm.value;
+    formValue.subjects = formValue.subjects.split(' ');
     if (this.editMode) {
-      this.postService.updatePost(this.id, this.postForm.value);
+      this.postService.updatePost(this.id, formValue);
     } else {
-      this.postService.addPost(this.postForm.value);
+      this.postService.addPost(formValue);
     }
     this.onCancel();
   }
@@ -48,6 +51,7 @@ export class PostEditComponent implements OnInit {
     this.postForm = new FormGroup({
       'title': new FormControl('', Validators.required),
       'content': new FormControl('', Validators.required),
+      'subjects': new FormControl('', Validators.required),
     });
   }
 
@@ -58,6 +62,7 @@ export class PostEditComponent implements OnInit {
           this.postForm = new FormGroup({
             'title': new FormControl(post.title, Validators.required),
             'content': new FormControl(post.content, Validators.required),
+            'subjects': new FormControl(post.subjects.join(' '), Validators.required)
           });
         })
         .catch(() => {

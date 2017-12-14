@@ -5,6 +5,8 @@ const router = require('express').Router();
 const User = require('../models/user');
 const lib = require('../lib');
 
+const defaultProjection = '_id name first_name last_name admin interests favorites';
+
 router.post('/', (req, res) => {
     if (!env.ALLOW_SIGNUP) {
         res.status(405).json({ message: 'Sign-up is closed' });
@@ -29,7 +31,7 @@ router.get('/:id', (req, res) => {
     if (id == 'current') {
         id = req.context.userId;
     }
-    User.findById(id, '_id name first_name last_name')
+    User.findById(id, defaultProjection)
         .then((user) => {
             res.status(200).json(user);
         })
@@ -37,8 +39,6 @@ router.get('/:id', (req, res) => {
             lib.handleError(res, 400, err);
         });
 });
-
-// TODO: PATCH
 
 router.delete('/:id', (req, res) => {
     if (req.context.admin || req.context.userId === req.params.id) {
@@ -50,7 +50,7 @@ router.delete('/:id', (req, res) => {
                 lib.handleError(res, 400, err);
             });
     
-        // TODO: Token must be invalidated now.
+        // NOTE: Token must be invalidated now.
 
     } else {
         lib.handleError(res, 401, 'Unauthorized');

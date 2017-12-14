@@ -19,6 +19,7 @@ export class Post {
     date: Date;
     content: string;
     edited: Date;
+    subjects: string[];
 
     comments: Comment[];
 
