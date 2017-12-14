@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-md-8">
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <textarea type="text" placeholder="Comment" id="text" name="text" class="form-control" rows="6" [(ngModel)]="model.text" #text="ngModel"></textarea>
+        <textarea type="text" placeholder="Comment" id="text" name="text" class="form-control" rows="3" [(ngModel)]="model.text" #text="ngModel"></textarea>
       </div>
       <button type="submit" class="btn btn-success">Comment</button>
     </form>

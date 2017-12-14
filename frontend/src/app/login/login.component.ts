@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
+import { UserService } from '../shared/user.service';
 
 @Component({
     selector: 'app-login',
@@ -11,19 +12,19 @@ export class LoginComponent implements OnInit {
     errorMsg: string = null;
     returnUrl: string;
 
-    constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+    constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private userService: UserService) { }
 
     ngOnInit() {
-        // reset login status
-        this.authService.logout();
-
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/posts';
     }
 
     login() {
+      this.authService.logout();
+      this.userService.clearCache();
       this.authService.login(this.model.username, this.model.password)
         .then(() => {
+          this.userService.getCurrentUser();
           this.router.navigate([this.returnUrl]);
         })
         .catch((err) => {

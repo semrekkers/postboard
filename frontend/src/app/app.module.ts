@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { ApiService } from './shared/api.service';
 import { AuthService } from './shared/auth.service';
+import { UserService } from './shared/user.service';
 import { AppGuard } from './app.guard';
 import { PostService } from './posts/post.service';
 import { PostItemComponent } from './posts/post-list/post-item/post-item.component';
@@ -23,6 +24,7 @@ import { AlertService } from './shared/alert.service';
 import { PostCommentComponent } from './posts2/post-comment/post-comment.component';
 import { PostWriteCommentComponent } from './posts2/post-write-comment/post-write-comment.component';
 import { PostService as PostService2 } from './posts2/post.service';
+import { PostContentComponent } from './posts2/post-content/post-content.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { PostService as PostService2 } from './posts2/post.service';
     PostViewComponent,
     PostCommentComponent,
     PostWriteCommentComponent,
+    PostContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,7 @@ import { PostService as PostService2 } from './posts2/post.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [PostService, PostService2, AlertService, ApiService, AuthService, AppGuard],
+  providers: [PostService, PostService2, AlertService, UserService, ApiService, AuthService, AppGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
 
 import { AppConfig } from '../app.config';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class ApiService {

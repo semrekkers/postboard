@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../../models/post.model';
+import { Post, Comment } from '../../models/post.model';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../post.service';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-post-view',
   templateUrl: './post-view.component.html'
 })
 export class PostViewComponent implements OnInit {
-  post: Post = new Post();
+  postSubject = new Subject<Post>();
+  postComments: Comment[] = [];
+  post: Post;
 
   constructor(private posts: PostService, private route: ActivatedRoute) { }
 
@@ -17,11 +20,14 @@ export class PostViewComponent implements OnInit {
       (params) => {
         this.posts.getPost(params['id'])
           .then((res) => {
-            this.post = res as Post;
-            console.log(this.post);
+            this.postSubject.next(res as Post);
           });
       }
     );
+    this.postSubject.subscribe((post) => {
+      this.post = post;
+      this.postComments = post.comments;
+    });
   }
 
 }

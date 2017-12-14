@@ -1,13 +1,10 @@
-<div>
-  <div class="row">
-    <h3>{{ post.title }}</h3>
+<div class="container">
+  <app-post-content [postSubject]="postSubject"></app-post-content>
+  <div class="row" style="margin-top: 25px;">
+    <div class="col-md-8">
+      <h4>Comments</h4>
+    </div>
   </div>
-  <div class="row">
-    By {{ post.author.first_name }} {{ post.author.last_name }}
-  </div>
-  <div class="row">
-    {{ post.content }}
-  </div>
+  <app-post-comment *ngFor="let cmt of this.postComments" [comment]="cmt" [postSubject]="postSubject" [post]="post"></app-post-comment>
+  <app-post-write-comment [postSubject]="postSubject"></app-post-write-comment>
 </div>
-<app-post-comment *ngFor="let cmt of this.post.comments" [comment]="cmt"></app-post-comment>
-<app-post-write-comment [post]="post"></app-post-write-comment>
