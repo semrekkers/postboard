@@ -3,25 +3,27 @@ import { ChangeDetectorRef, Injectable, Input } from '@angular/core';
 
 import { ApiService } from '../shared/api.service';
 
+import { Comment } from '../models/post.model';
+
 import { Post } from '../models/post.model';
+import { AlertService } from '../shared/alert.service';
 
 @Injectable()
 export class PostService {
   postsChanged = new Subject<Post[]>();
+  posts: Post[] = [];
 
-  public posts: Post[] = [];
+  constructor(private api: ApiService, private alert: AlertService) {}
 
-  constructor(private api: ApiService) {}
-
-  getPosts(): Promise<Post[]> {
+  getAllPosts(): Promise<Post[]> {
     return this.api.get('/posts').toPromise().then(response => {
       this.posts = response as Post[];
       return this.posts;
     });
   }
 
-  getPost(index: number) {
-    return this.posts[index];
+  getPostByIndex(i: number) {
+    return this.posts[i];
   }
 
   addPost(post: Post) {
@@ -49,25 +51,25 @@ export class PostService {
     this.postsChanged.next(this.posts.slice());
   }
 
-  addToFavorite(index: number) {
-    // const updatedItem = this.posts[index];
-    // updatedItem.favorite = true;
-
-    // this.posts[index] = updatedItem;
-
-    // this.http.put(apiEndpoint + '/posts/' + updatedItem._id + '/favorite', {}).subscribe();
-    // this.postsChanged.next(this.posts.slice());
+  getPost(id: string) {
+    return this.api.get<Post>('/posts/'+id).toPromise()
+        .catch((err) => {
+            this.alert.error(err);
+        });
   }
 
-  removeFromFavorite(index: number) {
-    // const old = this.posts[index];
-    // old.favorite = false;
+  commentOnPost(postId: string, comment) {
+    return this.api.post('/posts/'+postId+'/comments', comment).toPromise()
+      .catch((err) => {
+        this.alert.error(err);
+      });
+  }
 
-    // this.posts[index] = old;
-
-    // this.http.delete(apiEndpoint + '/posts/' + old._id + '/favorite').subscribe()
-
-    // this.postsChanged.next(this.posts.slice());
+  deleteComment(postId: string, comment: Comment) {
+    return this.api.delete('/posts/'+postId+'/comments/'+comment._id).toPromise()
+      .catch((err) => {
+        this.alert.error(err);
+      });
   }
 
 }

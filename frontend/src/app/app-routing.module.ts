@@ -4,10 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AppGuard } from './app.guard';
 import { PostsComponent } from './posts/posts.component';
-import { PostStartComponent } from './posts/post-start/post-start.component';
 import { PostEditComponent } from './posts/post-edit/post-edit.component';
-import { PostDetailComponent } from './posts/post-detail/post-detail.component';
-import { PostViewComponent } from './posts2/post-view/post-view.component';
+import { PostViewComponent } from './posts/post-view/post-view.component';
 
 const appRoutes: Routes = [{
     path: '',
@@ -17,28 +15,19 @@ const appRoutes: Routes = [{
   {
     path: 'posts',
     component: PostsComponent,
-    canActivate: [AppGuard],
-    children: [{
-        path: '',
-        component: PostStartComponent
-      },
-      {
-        path: 'new',
-        component: PostEditComponent
-      },
-      {
-        path: ':id',
-        component: PostDetailComponent
-      },
-      {
-        path: ':id/edit',
-        component: PostEditComponent
-      },
-    ]
+    canActivate: [AppGuard]
   },
   {
-    path: 'posts2/:id',
+    path: 'posts/:id/view',
     component: PostViewComponent
+  },
+  {
+    path: 'posts/:id/edit',
+    component: PostEditComponent
+  },
+  {
+    path: 'posts/new',
+    component: PostEditComponent
   },
   {
     path: 'login',

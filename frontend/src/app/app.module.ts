@@ -15,16 +15,14 @@ import { AppGuard } from './app.guard';
 import { PostService } from './posts/post.service';
 import { PostItemComponent } from './posts/post-list/post-item/post-item.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
-import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 import { PostEditComponent } from './posts/post-edit/post-edit.component';
 import { PostsComponent } from './posts/posts.component';
-import { PostStartComponent } from './posts/post-start/post-start.component';
-import { PostViewComponent } from './posts2/post-view/post-view.component';
+import { PostViewComponent } from './posts/post-view/post-view.component';
 import { AlertService } from './shared/alert.service';
-import { PostCommentComponent } from './posts2/post-comment/post-comment.component';
-import { PostWriteCommentComponent } from './posts2/post-write-comment/post-write-comment.component';
-import { PostService as PostService2 } from './posts2/post.service';
-import { PostContentComponent } from './posts2/post-content/post-content.component';
+import { PostCommentComponent } from './posts/post-comment/post-comment.component';
+import { PostWriteCommentComponent } from './posts/post-write-comment/post-write-comment.component';
+import { PostService as PostService2 } from './posts/post.service';
+import { PostContentComponent } from './posts/post-content/post-content.component';
 
 @NgModule({
   declarations: [
@@ -34,10 +32,8 @@ import { PostContentComponent } from './posts2/post-content/post-content.compone
     LoginComponent,
     PostItemComponent,
     PostListComponent,
-    PostDetailComponent,
     PostEditComponent,
     PostsComponent,
-    PostStartComponent,
     PostViewComponent,
     PostCommentComponent,
     PostWriteCommentComponent,
