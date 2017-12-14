@@ -9,7 +9,7 @@ import { PostViewComponent } from './posts/post-view/post-view.component';
 
 const appRoutes: Routes = [{
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/posts',
     pathMatch: 'full',
   },
   {
@@ -18,16 +18,19 @@ const appRoutes: Routes = [{
     canActivate: [AppGuard]
   },
   {
-    path: 'posts/:id/view',
-    component: PostViewComponent
+    path: 'posts/new',
+    component: PostEditComponent,
+    canActivate: [AppGuard]
+  },
+  {
+    path: 'posts/:id',
+    component: PostViewComponent,
+    canActivate: [AppGuard]
   },
   {
     path: 'posts/:id/edit',
-    component: PostEditComponent
-  },
-  {
-    path: 'posts/new',
-    component: PostEditComponent
+    component: PostEditComponent,
+    canActivate: [AppGuard]
   },
   {
     path: 'login',

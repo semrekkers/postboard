@@ -18,6 +18,7 @@ export class PostService {
   getAllPosts(): Promise<Post[]> {
     return this.api.get('/posts').toPromise().then(response => {
       this.posts = response as Post[];
+      this.postsChanged.next(this.posts);
       return this.posts;
     });
   }
@@ -27,28 +28,24 @@ export class PostService {
   }
 
   addPost(post: Post) {
-    this.api.post('/posts', post).subscribe(data => {
+    return this.api.post('/posts', post).subscribe(data => {
       this.posts.push(<Post>data);
       this.postsChanged.next(this.posts.slice());
     });
   }
 
-  updatePost(index: number, newPost: Post) {
-    const old = this.posts[index];
-
-    this.posts[index] = newPost;
-    this.api.put('/posts/' + old._id, newPost).subscribe();
-
-    this.postsChanged.next(this.posts.slice());
+  updatePost(postId: string, newPost: Post) {
+    return this.api.put('/posts/' + postId, newPost).toPromise()
+      .then(() => {
+        this.getAllPosts();
+      });
   }
 
-  deletePost(index: number) {
-    const old = this.posts[index];
-    this.posts.splice(index, 1);
-
-    this.api.delete('/posts/' + old._id).subscribe();
-
-    this.postsChanged.next(this.posts.slice());
+  deletePost(postId: string) {
+    return this.api.delete('/posts/' + postId).toPromise()
+      .then(() => {
+        this.getAllPosts();
+      });
   }
 
   getPost(id: string) {

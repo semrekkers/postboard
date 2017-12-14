@@ -34,4 +34,11 @@ export class PostCommentComponent implements OnInit {
         this.postSubject.next(post as Post);
       });
   }
+
+  canDelete(): boolean {
+    if (!this.currentUser) {
+      return false;
+    }
+    return this.currentUser._id == this.comment.author._id;
+  }
 }

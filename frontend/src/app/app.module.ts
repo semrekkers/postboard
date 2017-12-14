@@ -5,7 +5,6 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { ApiService } from './shared/api.service';
@@ -28,7 +27,6 @@ import { PostContentComponent } from './posts/post-content/post-content.componen
   declarations: [
     AppComponent,
     HeaderComponent,
-    DropdownDirective,
     LoginComponent,
     PostItemComponent,
     PostListComponent,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-posts',
@@ -6,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private user: UserService) { }
 
   ngOnInit() {
+    this.user.getCurrentUser();
   }
 
 }

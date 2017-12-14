@@ -8,8 +8,8 @@
     <p>{{ comment.text }}</p>
   </div>
   <div class="col-md-1">
-    <a class="btn btn-danger" (click)="onDelete()" role="button" *ngIf="comment.author._id == currentUser._id">
-        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+    <a class="btn btn-danger" (click)="onDelete()" role="button" *ngIf="canDelete()">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </a>
   </div>
 </div>

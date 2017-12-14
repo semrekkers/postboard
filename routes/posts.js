@@ -37,10 +37,33 @@ router.get('/:id', (req, res) => {
         });
 });
 
-// TODO: PATCH
+router.put('/:id', (req, res) => {
+    Post.findById(req.params.id)
+        .then((post) => {
+            if (post.author != req.context.userId) {
+                return Promise.reject(new Error('Current user is not the author'));
+            }
+            post.title = req.body.title;
+            post.content = req.body.content;
+            post.edited = Date.now();
+            return post.save();
+        })
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            lib.handleError(res, 400, err);
+        });
+});
 
 router.delete('/:id', (req, res) => {
-    Post.findByIdAndRemove(req.params.id)
+    Post.findById(req.params.id)
+        .then((post) => {
+            if (post.author != req.context.userId) {
+                return Promise.reject(new Error('Current user is not the author'));
+            }
+            return post.remove();
+        })
         .then(() => {
             res.sendStatus(200);
         })
@@ -77,6 +100,9 @@ router.post('/:postId/comments', (req, res) => {
 router.delete('/:postId/comments/:id', (req, res) => {
     Post.findById(req.params.postId)
         .then((post) => {
+            if (post.author != req.context.userId) {
+                return Promise.reject(new Error('Current user is not the author'));
+            }
             post.comments.id(req.params.id).remove();
             return post.save();
         })

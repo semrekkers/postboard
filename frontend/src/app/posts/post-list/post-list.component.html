@@ -6,6 +6,8 @@
 <hr>
 <div class="row">
   <div class="col-xs-12">
-    <app-post-item *ngFor="let postEl of posts; let i = index" [post]="postEl" [index]="i"></app-post-item>
+    <div class="list-group">
+      <app-post-item *ngFor="let postEl of posts; let i = index" [post]="postEl" [index]="i"></app-post-item>
+    </div>
   </div>
 </div>

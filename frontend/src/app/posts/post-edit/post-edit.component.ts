@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
+import { Post } from '../../models/post.model';
+
 import { PostService } from '../post.service';
 
 @Component({
@@ -10,20 +12,19 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
-  id: number;
+  id: string;
   editMode = false;
   postForm: FormGroup;
 
-  constructor(private route: ActivatedRoute,
-              private postService: PostService,
-              private router: Router) {
+  constructor(private route: ActivatedRoute, private postService: PostService, private router: Router) {
   }
 
   ngOnInit() {
+    this.emptyForm();
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.id = +params['id'];
+          this.id = params['id'];
           this.editMode = params['id'] != null;
           this.initForm();
         }
@@ -43,20 +44,26 @@ export class PostEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  private initForm() {
-    let postTitle = '';
-    let postContent = '';
-
-    if (this.editMode) {
-      const post = this.postService.getPostByIndex(this.id);
-      postTitle = post.title;
-      postContent = post.content;
-    }
-
+  private emptyForm() {
     this.postForm = new FormGroup({
-      'title': new FormControl(postTitle, Validators.required),
-      'content': new FormControl(postContent, Validators.required),
+      'title': new FormControl('', Validators.required),
+      'content': new FormControl('', Validators.required),
     });
+  }
+
+  private initForm() {
+    if (this.editMode) {
+      this.postService.getPost(this.id)
+        .then((post: Post) => {
+          this.postForm = new FormGroup({
+            'title': new FormControl(post.title, Validators.required),
+            'content': new FormControl(post.content, Validators.required),
+          });
+        })
+        .catch(() => {
+          this.emptyForm();
+        });
+    }
   }
 
 }

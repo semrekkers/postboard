@@ -1,6 +1,6 @@
-<a style="cursor: pointer;" [routerLink]="[index]" routerLinkActive="active" class="list-group-item clearfix">
+<a style="cursor: pointer;" (click)="onClick()" class="list-group-item clearfix">
   <div class="pull-left">
     <h4 class="list-group-item-heading">{{ post.title }}</h4>
-    <p class="list-group-item-text">{{ post.content }}</p>
+    <p class="list-group-item-text">{{ (post.content.length>50)? (post.content | slice:0:50)+'...':(post.content) }}</p>
   </div>
 </a>
