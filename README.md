@@ -14,7 +14,7 @@ PostBoard is a small message platform. It has basic User Management and Post Man
 - User authorizations
 - Post management (CRUD)
 - Post comments
-- Favourites list
+- ~~Favourites list~~
 
 ## Dependencies
 
@@ -22,6 +22,12 @@ PostBoard is a small message platform. It has basic User Management and Post Man
 - [MongoDB](https://www.mongodb.com/) 3.4.10
 - [Neo4j](https://neo4j.com/) 3.3.1
 - [Caddy](https://caddyserver.com/) 0.10.10
+
+## Installation
+
+- Create a `.env` file, see `env.example.txt` for an example.
+- Run the backend: `npm run debug`.
+- Run the frontend: `ng serve --open`.
 
 ## Basic design
 
@@ -84,3 +90,9 @@ The base image for the backend is [semrekkers/caddy-node](https://hub.docker.com
 ## Why this project
 
 This is a project for the MongoDB, Express, Angular, Node (MEAN) course of my current study. In addition, Neo4j is also a requirement for this course. I use it mainly for data relations in this project.
+
+## Student information
+
+|Name:      |Sem Rekkers        |
+|-----------|-------------------|
+|Studentnr: |2114085            |
