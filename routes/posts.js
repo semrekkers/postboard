@@ -64,6 +64,9 @@ router.post('/:postId/comments', (req, res) => {
             return post.save();
         })
         .then((post) => {
+            return Post.populate(post, [{ path: 'author' }, { path: 'comments.author' }]);
+        })
+        .then((post) => {
             res.status(200).json(post);
         })
         .catch((err) => {
@@ -71,16 +74,17 @@ router.post('/:postId/comments', (req, res) => {
         });
 });
 
-// TODO: PATCH
-
 router.delete('/:postId/comments/:id', (req, res) => {
     Post.findById(req.params.postId)
         .then((post) => {
             post.comments.id(req.params.id).remove();
             return post.save();
         })
-        .then(() => {
-            res.sendStatus(200);
+        .then((post) => {
+            return Post.populate(post, [{ path: 'author' }, { path: 'comments.author' }]);
+        })
+        .then((post) => {
+            res.status(200).json(post);
         })
         .catch((err) => {
             lib.handleError(res, 400, err);
