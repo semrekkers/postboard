@@ -2,7 +2,21 @@
 
 ## Table of Contents
 
-**TODO**
+- [About](#about)
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Basic design](#basic-design)
+- [API](#api)
+    - [Sessions](#sessions)
+    - [Users](#users)
+    - [Posts](#posts)
+    - [Comments](#comments)
+    - [Favorites](#favorites)
+- [Color scheme](#color-scheme)
+- [Docker images](#docker-images)
+- [Why this project](#why-this-project)
+- [Student information](#student-information)
 
 ## About
 
