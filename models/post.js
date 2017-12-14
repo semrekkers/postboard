@@ -12,7 +12,7 @@ const PostSchema = new Schema({
     author: { type: ObjectId, required: true, ref: 'User' },
     title: { type: String, required: true },
     date: { type: Date, required: true, default: Date.now },
-    subjects: { type: [String], required: true, default: [] },
+    subjects: { type: [String], default: [] },
     content: { type: String },
     edited: { type: Date },
 
