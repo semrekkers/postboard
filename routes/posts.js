@@ -1,3 +1,4 @@
+const env = require('../app.env');
 const router = require('express').Router();
 
 const Post = require('../models/post');
@@ -9,9 +10,11 @@ router.post('/', (req, res) => {
     let postForm = req.body;
     postForm.author = req.context.userId;
     let post = new Post(postForm);
+    let author = post.author.toString();
 
     post.save()
         .then((p) => {
+            updateInterest(post, author, 0);
             res.status(200).json({ _id: p._id });
         })
         .catch((err) => {
@@ -53,7 +56,8 @@ router.put('/:id', (req, res) => {
             post.edited = Date.now();
             return post.save();
         })
-        .then(() => {
+        .then((post) => {
+            updateInterest(post, post.author.toString(), 0);
             res.sendStatus(200);
         })
         .catch((err) => {
@@ -62,7 +66,9 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    Post.findById(req.params.id)
+    let postId = req.params.id;
+    let session = env.neo4j.session();
+    Post.findById(postId)
         .then((post) => {
             if (post.author != req.context.userId) {
                 return Promise.reject(new Error('Current user is not the author'));
@@ -70,12 +76,42 @@ router.delete('/:id', (req, res) => {
             return post.remove();
         })
         .then(() => {
+            return session.run('MATCH (p:Post { _id: {id} }) DETACH DELETE p', { id: postId });
+        })
+        .then(() => {
+            session.close();
             res.sendStatus(200);
         })
         .catch((err) => {
             lib.handleError(res, 400, err);
         });
 });
+
+function updateInterest(post, author, i) {
+    if (post.subjects.length <= i) {
+        return;
+    }
+    let session = env.neo4j.session();
+    let subject = post.subjects[i];
+    session
+        .run('MERGE (u:User { _id: {author} }) '+
+             'MERGE (s:Subject { name: {subject} }) '+
+             'MERGE (p:Post { _id: {post} }) '+
+             'MERGE (u)-[:INTERESTED_IN]->(s)'+
+             'MERGE (p)-[:ABOUT]->(s)'+
+             'MERGE (p)-[:AUTHOR]->(u)', {
+            author: author,
+            subject: subject,
+            post: post._id.toString()
+        })
+        .then(() => {
+            session.close();
+            updateInterest(post, author, i+1);
+        })
+        .catch((err) => {
+            lib.logError('creating INTEREST path', err);
+        });
+}
 
 /*
  *

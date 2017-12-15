@@ -15,11 +15,16 @@ router.post('/', (req, res) => {
 
     let user = new User(req.body);
 
+    let session = env.neo4j.session();
     setPassword(user, req.body)
         .then(() => checkUser(user))
         .then(() => user.save())
-        .then((u) => {
-            res.status(200).json({ _id: u._id });
+        .then((user) => {
+            return session.run('CREATE (u:User { _id: {_id} }) RETURN u._id AS _id', { _id: user._id.toString() });
+        })
+        .then((result) => {
+            res.status(200).json({ _id: result.records[0].get('_id') });
+            session.close();
         })
         .catch((err) => {
             lib.handleError(res, 400, err);
@@ -42,8 +47,14 @@ router.get('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     if (req.context.admin || req.context.userId === req.params.id) {
-        User.findByIdAndRemove(req.params.id)
+        let id = req.params.id;
+        let session = env.neo4j.session();
+        User.findByIdAndRemove(id)
             .then(() => {
+                return session.run('MATCH (u:User {_id: {_id} }) DETACH DELETE u', { _id: id });
+            })
+            .then(() => {
+                session.close();
                 res.sendStatus(200);
             })
             .catch((err) => {
@@ -55,6 +66,11 @@ router.delete('/:id', (req, res) => {
     } else {
         lib.handleError(res, 401, 'Unauthorized');
     }
+});
+
+router.get('/:id/interests', (req, res) => {
+    let userId = req.params.id;
+    let session = env.neo4j.session();
 });
 
 function setPassword(user, reqBody) {
