@@ -109,7 +109,7 @@ function updateInterest(post, author, i) {
             updateInterest(post, author, i+1);
         })
         .catch((err) => {
-            lib.logError('creating INTEREST path', err);
+            lib.logError('updating paths', err);
         });
 }
 

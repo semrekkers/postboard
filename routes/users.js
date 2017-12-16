@@ -68,11 +68,6 @@ router.delete('/:id', (req, res) => {
     }
 });
 
-router.get('/:id/interests', (req, res) => {
-    let userId = req.params.id;
-    let session = env.neo4j.session();
-});
-
 function setPassword(user, reqBody) {
     return new Promise((resolve, reject) => {
         if (!reqBody.password) {
@@ -100,6 +95,71 @@ function checkUser(user) {
                 reject(err);
             });
     });
+}
+
+/*
+ *
+ *      Interests
+ * 
+ */
+
+router.get('/:id/interests', (req, res) => {
+    let userId = req.params.id;
+
+    getSubjects(userId, {})
+        .then((doc) => { return getPosts(userId, doc); })
+        .then((doc) => { return getUsers(userId, doc); })
+        .then((doc) => {
+            res.status(200).json(doc);
+        })
+        .catch((err) => {
+            lib.handleError(res, 400, err);
+        });
+});
+
+function getSubjects(userId, doc) {
+    let session = env.neo4j.session();
+    return session
+        .run('MATCH (u:User { _id: {userId} }) RETURN [(u)-->(s:Subject) | s.name] AS subjects', {
+            userId: userId
+        })
+        .then((result) => {
+            if (result.records.length) {
+                doc['subjects'] = result.records[0].get('subjects');
+            }
+            session.close();
+            return doc;
+        });
+}
+
+function getPosts(userId, doc) {
+    let session = env.neo4j.session();
+    return session
+        .run('MATCH (u:User { _id: {userId} })-->(:Subject)<--(p:Post) RETURN collect(DISTINCT p._id) AS posts', {
+            userId: userId
+        })
+        .then((result) => {
+            if (result.records.length) {
+                doc['posts'] = result.records[0].get('posts');
+            }
+            session.close();
+            return doc;
+        });
+}
+
+function getUsers(userId, doc) {
+    let session = env.neo4j.session();
+    return session
+        .run('MATCH (u:User { _id: {userId} })-->(:Subject)<--(c:User) RETURN collect(DISTINCT c._id) AS users', {
+            userId: userId
+        })
+        .then((result) => {
+            if (result.records.length) {
+                doc['users'] = result.records[0].get('users');
+            }
+            session.close();
+            return doc;
+        });
 }
 
 module.exports = router;
